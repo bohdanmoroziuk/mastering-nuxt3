@@ -1,15 +1,15 @@
-import { Course } from '~/types'
+import { Chapter } from '~/types'
 
-export const useLesson = (
-  course: Course,
-  chapterSlug: string | string[],
-  lessonSlug: string | string[]
-) => (
-  computed(() => (
-    course
-      .chapters
-      .find(chapter => chapter.slug === chapterSlug)
-      ?.lessons
-      ?.find(lesson => lesson.slug === lessonSlug)
+export const useLesson = (lessonSlug: string | string[], chapter?: Chapter) => {
+  if (!chapter) { return ref(undefined) }
+
+  const lesson = computed(() => (
+    chapter
+      .lessons
+      .find(lesson => lesson.slug === lessonSlug)
   ))
-)
+
+  if (!lesson.value) { return ref(undefined) }
+
+  return lesson
+}

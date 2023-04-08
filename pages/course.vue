@@ -36,6 +36,7 @@ const chapters = computed(() => course.chapters)
             href=""
             class="flex flex-row space-x-1 no-underline prose-sm font-normal"
             :to="`/course/chapters/${chapter.slug}/lessons/${lesson.slug}`"
+            active-class="text-blue-500"
           >
             <span class="text-gray-500">
               {{ lessonIndex + 1 }}.

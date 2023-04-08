@@ -21,20 +21,20 @@ const lesson = useLesson(lessonSlug.value, chapter.value)
       {{ lesson.title }}
     </h2>
     <div class="flex space-x-4 mt-2 mb-8">
-      <a
+      <NuxtLink
         v-if="lesson.sourceUrl"
         class="font-normal text-md text-gray-500"
         :href="lesson.sourceUrl"
       >
         Download Source Code
-      </a>
-      <a
+      </NuxtLink>
+      <NuxtLink
         v-if="lesson.downloadUrl"
         class="font-normal text-md text-gray-500"
         :href="lesson.downloadUrl"
       >
         Download Video
-      </a>
+      </NuxtLink>
     </div>
     <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
     <p>{{ lesson.text }}</p>

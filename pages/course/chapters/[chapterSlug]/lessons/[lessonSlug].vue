@@ -10,6 +10,12 @@ const course = await useCourse()
 const chapter = useChapter(chapterSlug.value, course)
 
 const lesson = useLesson(lessonSlug.value, chapter.value)
+
+const title = computed(() => `${lesson.value?.title} - ${course.title}`)
+
+useHead({
+  title: title.value
+})
 </script>
 
 <template>

@@ -10,6 +10,14 @@ const course = await useCourse()
 const chapter = useChapter(chapterSlug.value, course)
 
 const lesson = useLesson(lessonSlug.value, chapter.value)
+
+const title = computed(() => `${lesson.value?.title} - ${course.title}`)
+
+useHead({
+  title: title.value
+})
+
+const [isComplete, toggleComplete] = useCourseProgress(chapter.value!.number, lesson.value!.number)
 </script>
 
 <template>
@@ -38,5 +46,11 @@ const lesson = useLesson(lessonSlug.value, chapter.value)
     </div>
     <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
     <p>{{ lesson.text }}</p>
+    <ClientOnly>
+      <LessonCompleteButton
+        :model-value="isComplete"
+        @update:model-value="toggleComplete"
+      />
+    </ClientOnly>
   </div>
 </template>

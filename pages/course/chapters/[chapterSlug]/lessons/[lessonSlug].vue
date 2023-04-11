@@ -46,11 +46,9 @@ const [isComplete, toggleComplete] = useCourseProgress(chapter.value!.number, le
     </div>
     <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
     <p>{{ lesson.text }}</p>
-    <ClientOnly>
-      <LessonCompleteButton
-        :model-value="isComplete"
-        @update:model-value="toggleComplete"
-      />
-    </ClientOnly>
+    <LessonCompleteButton
+      :model-value="isComplete"
+      @update:model-value="toggleComplete"
+    />
   </div>
 </template>

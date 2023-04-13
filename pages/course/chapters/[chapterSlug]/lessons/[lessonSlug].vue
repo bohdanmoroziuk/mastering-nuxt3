@@ -1,29 +1,41 @@
 <script setup lang="ts">
+definePageMeta({
+  validate ({ params }) {
+    const course = useCourse()
+
+    const chapter = useChapter(params.chapterSlug, course)
+
+    if (!chapter.value) {
+      return createError({
+        statusCode: 404,
+        message: 'Chapter not found'
+      })
+    }
+
+    const lesson = useLesson(params.lessonSlug, chapter.value)
+
+    if (!lesson.value) {
+      return createError({
+        statusCode: 404,
+        message: 'Lesson not found'
+      })
+    }
+
+    return true
+  }
+})
+
 const route = useRoute()
 
 const chapterSlug = computed(() => route.params.chapterSlug)
 
 const lessonSlug = computed(() => route.params.lessonSlug)
 
-const course = await useCourse()
+const course = useCourse()
 
 const chapter = useChapter(chapterSlug.value, course)
 
-if (!chapter.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'Chapter not found'
-  })
-}
-
 const lesson = useLesson(lessonSlug.value, chapter.value)
-
-if (!lesson.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'Lesson not found'
-  })
-}
 
 const title = computed(() => `${lesson.value?.title} - ${course.title}`)
 

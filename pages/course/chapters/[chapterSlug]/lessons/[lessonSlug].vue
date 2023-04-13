@@ -9,7 +9,21 @@ const course = await useCourse()
 
 const chapter = useChapter(chapterSlug.value, course)
 
+if (!chapter.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'Chapter not found'
+  })
+}
+
 const lesson = useLesson(lessonSlug.value, chapter.value)
+
+if (!lesson.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'Lesson not found'
+  })
+}
 
 const title = computed(() => `${lesson.value?.title} - ${course.title}`)
 

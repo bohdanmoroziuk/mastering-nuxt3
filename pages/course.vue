@@ -2,6 +2,10 @@
 const course = await useCourse()
 
 const chapters = computed(() => course.chapters)
+
+const resetError = (error: Ref<unknown>) => {
+  error.value = null
+}
 </script>
 
 <template>
@@ -46,7 +50,24 @@ const chapters = computed(() => course.chapters)
     </div>
 
     <div class="prose p-12 bg-white rounded-md w-[65ch]">
-      <NuxtPage />
+      <NuxtErrorBoundary>
+        <NuxtPage />
+
+        <template #error="{ error }">
+          <div>
+            <p>
+              Oh no, something went wrong with the lesson!
+              <code>{{ error }}</code>
+            </p>
+            <button
+              class="bg-gray-500 text-white font-bold py-1 px-3 rounded hover:cursor-pointer"
+              @click="resetError(error)"
+            >
+              Reset
+            </button>
+          </div>
+        </template>
+      </NuxtErrorBoundary>
     </div>
   </div>
 </template>

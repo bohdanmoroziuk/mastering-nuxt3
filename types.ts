@@ -3,7 +3,7 @@ export interface Lesson {
   slug: string;
   number: number;
   downloadUrl: string;
-  sourceUrl: string;
+  sourceUrl?: string;
   videoId: number;
   text: string;
 }

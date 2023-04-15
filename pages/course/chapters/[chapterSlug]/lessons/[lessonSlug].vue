@@ -1,27 +1,29 @@
 <script setup lang="ts">
 definePageMeta({
-  validate ({ params }) {
+  middleware ({ params }) {
     const course = useCourse()
 
     const chapter = useChapter(params.chapterSlug, course)
 
     if (!chapter.value) {
-      return createError({
-        statusCode: 404,
-        message: 'Chapter not found'
-      })
+      return abortNavigation(
+        createError({
+          statusCode: 404,
+          message: 'Chapter not found'
+        })
+      )
     }
 
     const lesson = useLesson(params.lessonSlug, chapter.value)
 
     if (!lesson.value) {
-      return createError({
-        statusCode: 404,
-        message: 'Lesson not found'
-      })
+      return abortNavigation(
+        createError({
+          statusCode: 404,
+          message: 'Lesson not found'
+        })
+      )
     }
-
-    return true
   }
 })
 

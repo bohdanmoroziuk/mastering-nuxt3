@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const course = await useCourse()
+const course = useCourse()
+
+const title = computed(() => course.title)
 
 const chapters = computed(() => course.chapters)
 
@@ -13,7 +15,7 @@ const resetError = (error: Ref<unknown>) => {
     <h1>
       <span class="font-medium">
         Course:
-        <span class="font-bold">Mastering Nuxt 3</span>
+        <span class="font-bold">{{ title }}</span>
       </span>
     </h1>
   </div>
@@ -34,7 +36,6 @@ const resetError = (error: Ref<unknown>) => {
         <NuxtLink
           v-for="(lesson, lessonIndex) of chapter.lessons"
           :key="lesson.slug"
-          href=""
           class="flex flex-row space-x-1 no-underline prose-sm font-normal"
           :to="`/course/chapters/${chapter.slug}/lessons/${lesson.slug}`"
           active-class="text-blue-500"

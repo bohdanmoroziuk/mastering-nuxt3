@@ -5,7 +5,17 @@ interface Props {
   user: User | null
 }
 
+interface Emits {
+  (event: 'logout'): void
+}
+
 defineProps<Props>()
+
+const emit = defineEmits<Emits>()
+
+const logout = () => {
+  emit('logout')
+}
 </script>
 
 <template>
@@ -15,7 +25,10 @@ defineProps<Props>()
       <div class="font-medium">
         {{ user.name }}
       </div>
-      <button class="text-sm underline text-slate-500">
+      <button
+        class="text-sm underline text-slate-500"
+        @click="logout"
+      >
         Log out
       </button>
     </div>

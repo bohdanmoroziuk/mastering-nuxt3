@@ -10,6 +10,8 @@ const resetError = (error: Ref<unknown>) => {
 }
 
 const user = useUser()
+
+const { logout } = useAuth()
 </script>
 
 <template>
@@ -18,7 +20,7 @@ const user = useUser()
       <h1 class="text-3xl font-bold">
         {{ title }}
       </h1>
-      <UserCard :user="user" />
+      <UserCard :user="user" @logout="logout" />
     </div>
 
     <div class="flex flex-row justify-center flex-grow">

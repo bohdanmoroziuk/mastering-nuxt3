@@ -3,16 +3,7 @@ const course = useCourse()
 
 const title = computed(() => course.title)
 
-const supabase = useSupabaseClient()
-
-const login = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' })
-
-  if (error) {
-    // eslint-disable-next-line no-console
-    console.log(error)
-  }
-}
+const { login } = useAuth()
 </script>
 
 <template>

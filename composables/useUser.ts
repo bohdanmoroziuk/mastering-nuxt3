@@ -1,18 +1,18 @@
 import { User } from '~/types'
 
-export const useUser = (): User | null => {
+export const useUser = (): Ref<User | null> => {
   const user = useSupabaseUser()
 
   if (!user.value) {
-    return null
+    return ref(null)
   }
 
   const name = computed(() => user.value!.user_metadata.full_name)
 
   const avatar = computed(() => user.value!.user_metadata.avatar_url)
 
-  return {
+  return ref({
     name: name.value,
     avatar: avatar.value
-  }
+  })
 }

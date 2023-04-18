@@ -1,10 +1,18 @@
 /* eslint-disable no-console */
 
-export const useAuth = () => {
-  const { auth } = useSupabaseClient()
+interface LoginOptions {
+  redirectTo?: string
+}
 
-  const login = async () => {
-    const { error } = await auth.signInWithOAuth({ provider: 'github' })
+export const useAuth = () => {
+  const client = useSupabaseClient()
+
+  const user = useSupabaseUser()
+
+  const isLoggedIn = computed(() => !!user.value)
+
+  const login = async (options?: LoginOptions) => {
+    const { error } = await client.auth.signInWithOAuth({ provider: 'github', options })
 
     if (error) {
       console.log(error)
@@ -12,7 +20,7 @@ export const useAuth = () => {
   }
 
   const logout = async () => {
-    const { error } = await auth.signOut()
+    const { error } = await client.auth.signOut()
 
     if (error) {
       console.log(error)
@@ -23,6 +31,7 @@ export const useAuth = () => {
   }
 
   return {
+    isLoggedIn,
     login,
     logout
   }

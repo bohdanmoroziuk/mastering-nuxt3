@@ -1,4 +1,4 @@
-import { Chapter } from '~/types'
+import { Chapter } from '~/types/course'
 
 export const useLesson = (lessonSlug: string | string[], chapter?: Chapter) => {
   if (!chapter) { return ref(undefined) }

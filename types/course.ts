@@ -19,8 +19,3 @@ export interface Course {
   title: string;
   chapters: Chapter[];
 }
-
-export interface User {
-  name: string;
-  avatar: string;
-}

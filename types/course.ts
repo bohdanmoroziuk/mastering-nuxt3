@@ -19,3 +19,17 @@ export interface Course {
   title: string;
   chapters: Chapter[];
 }
+
+export interface CourseMeta {
+  title: string;
+  chapters: {
+    title: string;
+    slug: string;
+    number: number;
+    lessons: {
+      title: string;
+      slug: string;
+      number: number;
+    }[]
+  }[]
+}

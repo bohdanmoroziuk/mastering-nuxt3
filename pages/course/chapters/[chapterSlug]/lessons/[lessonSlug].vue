@@ -3,25 +3,23 @@ const route = useRoute()
 
 const { chapterSlug, lessonSlug } = route.params
 
+const courseMeta = await useCourseMeta()
+
 const lesson = await useLesson(chapterSlug as string, lessonSlug as string)
 
-const course = useCourse()
-
-const chapter = useChapter(chapterSlug, course)
-
-const title = computed(() => `${lesson.value?.title} - ${course.title}`)
+const title = computed(() => `${lesson.value.title} - ${courseMeta.value.title}`)
 
 useHead({
   title: title.value
 })
 
-const [isComplete, toggleComplete] = useCourseProgress(chapter.value!.number, lesson.value!.number)
+// const [isComplete, toggleComplete] = useCourseProgress(chapter.value!.number, lesson.value!.number)
 </script>
 
 <template>
-  <div v-if="chapter && lesson">
+  <div>
     <p class="mt-0 uppercase font-bold text-slate-400 mb-1">
-      Lesson {{ chapter.number }} - {{ lesson.number }}
+      Lesson {{ lesson.number }}
     </p>
     <h2 class="my-0">
       {{ lesson.title }}
@@ -44,9 +42,9 @@ const [isComplete, toggleComplete] = useCourseProgress(chapter.value!.number, le
     </div>
     <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
     <p>{{ lesson.text }}</p>
-    <LessonCompleteButton
+    <!-- <LessonCompleteButton
       :model-value="isComplete"
       @update:model-value="toggleComplete"
-    />
+    /> -->
   </div>
 </template>

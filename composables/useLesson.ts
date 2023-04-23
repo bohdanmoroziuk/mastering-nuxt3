@@ -8,14 +8,7 @@ export const useLesson = async (
 ) => {
   const url = urlcat('/api/course/chapters/:chapterSlug/lessons/:lessonSlug', { chapterSlug, lessonSlug })
 
-  const { error, data } = await useFetch<Lesson>(url)
+  const lesson = await useCachedFetch<Lesson>(url)
 
-  if (error.value) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: `Could not fetch lesson "${lessonSlug}" in chapter "${chapterSlug}"`
-    })
-  }
-
-  return data as Ref<Lesson>
+  return lesson
 }

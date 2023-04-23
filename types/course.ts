@@ -8,6 +8,12 @@ export interface Lesson {
   text: string;
 }
 
+export interface LessonMeta {
+  title: string;
+  slug: string;
+  number: number;
+}
+
 export interface Chapter {
   title: string;
   slug: string;
@@ -15,12 +21,19 @@ export interface Chapter {
   lessons: Lesson[];
 }
 
+export interface ChapterMeta {
+  title: string;
+  slug: string;
+  number: number;
+  lessons: LessonMeta[];
+}
+
 export interface Course {
   title: string;
   chapters: Chapter[];
 }
 
-export interface User {
-  name: string;
-  avatar: string;
+export interface CourseMeta {
+  title: string;
+  chapters: ChapterMeta[];
 }

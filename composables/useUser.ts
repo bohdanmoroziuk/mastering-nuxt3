@@ -1,4 +1,4 @@
-import { User } from '~/types'
+import { User } from '~/types/user'
 
 export const useUser = (): Ref<User | null> => {
   const user = useSupabaseUser()

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-const course = useCourse()
-
-const title = computed(() => course.title)
-
-const chapters = computed(() => course.chapters)
+const courseMeta = await useCourseMeta()
 
 const resetError = (error: Ref<unknown>) => {
   error.value = null
@@ -18,7 +14,7 @@ const { logout } = useAuth()
   <div>
     <div class="mb-4 flex justify-between items-center w-full">
       <h1 class="text-3xl font-bold">
-        {{ title }}
+        {{ courseMeta.title }}
       </h1>
       <UserCard :user="user" @logout="logout" />
     </div>
@@ -29,7 +25,7 @@ const { logout } = useAuth()
       >
         <h3>Chapters</h3>
         <div
-          v-for="chapter of chapters"
+          v-for="chapter of courseMeta.chapters"
           :key="chapter.slug"
           class="space-y-1 mb-4 flex flex-col"
         >
@@ -37,14 +33,14 @@ const { logout } = useAuth()
             {{ chapter.title }}
           </h4>
           <NuxtLink
-            v-for="(lesson, lessonIndex) of chapter.lessons"
+            v-for="lesson of chapter.lessons"
             :key="lesson.slug"
             class="flex flex-row space-x-1 no-underline prose-sm font-normal"
             :to="`/course/chapters/${chapter.slug}/lessons/${lesson.slug}`"
             active-class="text-blue-500"
           >
             <span class="text-gray-500">
-              {{ lessonIndex + 1 }}.
+              {{ lesson.number }}.
             </span>
             <span>
               {{ lesson.title }}

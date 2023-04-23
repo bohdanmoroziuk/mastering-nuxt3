@@ -1,15 +1,14 @@
-import { Chapter } from '~/types'
+import urlcat from 'urlcat'
 
-export const useLesson = (lessonSlug: string | string[], chapter?: Chapter) => {
-  if (!chapter) { return ref(undefined) }
+import { Lesson } from '~/types/course'
 
-  const lesson = computed(() => (
-    chapter
-      .lessons
-      .find(lesson => lesson.slug === lessonSlug)
-  ))
+export const useLesson = async (
+  chapterSlug: string,
+  lessonSlug: string
+) => {
+  const url = urlcat('/api/course/chapters/:chapterSlug/lessons/:lessonSlug', { chapterSlug, lessonSlug })
 
-  if (!lesson.value) { return ref(undefined) }
+  const lesson = await useCachedFetch<Lesson>(url)
 
   return lesson
 }

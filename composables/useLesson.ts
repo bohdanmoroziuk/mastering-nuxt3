@@ -1,15 +1,21 @@
-import { Chapter } from '~/types/course'
+import urlcat from 'urlcat'
 
-export const useLesson = (lessonSlug: string | string[], chapter?: Chapter) => {
-  if (!chapter) { return ref(undefined) }
+import { Lesson } from '~/types/course'
 
-  const lesson = computed(() => (
-    chapter
-      .lessons
-      .find(lesson => lesson.slug === lessonSlug)
-  ))
+export const useLesson = async (
+  chapterSlug: string,
+  lessonSlug: string
+) => {
+  const url = urlcat('/api/course/chapters/:chapterSlug/lessons/:lessonSlug', { chapterSlug, lessonSlug })
 
-  if (!lesson.value) { return ref(undefined) }
+  const { error, data } = await useFetch<Lesson>(url)
 
-  return lesson
+  if (error.value) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: `Could not fetch lesson "${lessonSlug}" in chapter "${chapterSlug}"`
+    })
+  }
+
+  return data as Ref<Lesson>
 }

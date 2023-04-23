@@ -1,46 +1,13 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: [
-    ({ params }) => {
-      const course = useCourse()
-
-      const chapter = useChapter(params.chapterSlug, course)
-
-      if (!chapter.value) {
-        return abortNavigation(
-          createError({
-            statusCode: 404,
-            message: 'Chapter not found'
-          })
-        )
-      }
-
-      const lesson = useLesson(params.lessonSlug, chapter.value)
-
-      if (!lesson.value) {
-        return abortNavigation(
-          createError({
-            statusCode: 404,
-            message: 'Lesson not found'
-          })
-        )
-      }
-    },
-    'auth'
-  ]
-})
-
 const route = useRoute()
 
-const chapterSlug = computed(() => route.params.chapterSlug)
+const { chapterSlug, lessonSlug } = route.params
 
-const lessonSlug = computed(() => route.params.lessonSlug)
+const lesson = await useLesson(chapterSlug as string, lessonSlug as string)
 
 const course = useCourse()
 
-const chapter = useChapter(chapterSlug.value, course)
-
-const lesson = useLesson(lessonSlug.value, chapter.value)
+const chapter = useChapter(chapterSlug, course)
 
 const title = computed(() => `${lesson.value?.title} - ${course.title}`)
 

@@ -26,5 +26,8 @@
     "nuxt": "^3.3.3",
     "typescript": "^5.0.3",
     "vue-tsc": "^1.2.0"
+  },
+  "dependencies": {
+    "urlcat": "^3.1.0"
   }
 }

@@ -13,7 +13,9 @@ export const useCachedFetch = async <T>(url: string) => {
     return cache
   }
 
-  const { error, data } = await useFetch<T>(url)
+  const { data, error } = await useFetch<T>(url, {
+    headers: useRequestHeaders(['cookie']) as HeadersInit
+  })
 
   if (error.value) {
     throw createError(error.value)

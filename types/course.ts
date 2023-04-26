@@ -1,5 +1,7 @@
 export type { Lesson } from '@prisma/client'
 
-export type { CourseMeta } from '~/server/api/course/meta.get'
+export type { CourseMeta, ChapterMeta, LessonMeta } from '~/server/api/course/meta.get'
 
-export type CourseProgress = Record<string, Record<string, boolean>>
+export type ChapterProgress = Record<string, boolean>
+
+export type CourseProgress = Record<string, ChapterProgress>

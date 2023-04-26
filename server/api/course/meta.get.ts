@@ -35,5 +35,10 @@ export type CourseMeta = Prisma.CourseGetPayload<typeof courseSelect>
 export default defineEventHandler(async () => {
   const courseMeta = await prisma.course.findFirst(courseSelect)
 
-  return courseMeta
+  if (courseMeta) { return courseMeta }
+
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Course metadata not found'
+  })
 })

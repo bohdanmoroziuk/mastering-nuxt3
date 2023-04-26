@@ -1,39 +1,5 @@
-export interface Lesson {
-  title: string;
-  slug: string;
-  number: number;
-  downloadUrl: string;
-  sourceUrl?: string;
-  videoId: number;
-  text: string;
-}
+export type { Lesson } from '@prisma/client'
 
-export interface LessonMeta {
-  title: string;
-  slug: string;
-  number: number;
-}
+export type { CourseMeta } from '~/server/api/course/meta.get'
 
-export interface Chapter {
-  title: string;
-  slug: string;
-  number: number;
-  lessons: Lesson[];
-}
-
-export interface ChapterMeta {
-  title: string;
-  slug: string;
-  number: number;
-  lessons: LessonMeta[];
-}
-
-export interface Course {
-  title: string;
-  chapters: Chapter[];
-}
-
-export interface CourseMeta {
-  title: string;
-  chapters: ChapterMeta[];
-}
+export type CourseProgress = Record<string, Record<string, boolean>>

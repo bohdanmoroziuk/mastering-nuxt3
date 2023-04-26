@@ -1,9 +1,7 @@
-const FREE_CHAPTER_SLUG = '1-chapter-1'
+import { FREE_CHAPTER_SLUG } from '~/config'
 
 export default defineNuxtRouteMiddleware((to) => {
   const user = useSupabaseUser()
-
-  console.log(user.value)
 
   if (user.value) { return }
 

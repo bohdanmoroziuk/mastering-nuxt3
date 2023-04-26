@@ -1,22 +1,44 @@
-import { CourseMeta } from '~/types/course'
-import course from '~/server/course'
+import { PrismaClient, Prisma } from '@prisma/client'
 
-export default defineEventHandler((): CourseMeta => {
-  return {
-    title: course.title,
-    chapters: course.chapters.map((chapter) => {
-      return {
-        title: chapter.title,
-        slug: chapter.slug,
-        number: chapter.number,
-        lessons: chapter.lessons.map((lesson) => {
-          return {
-            title: lesson.title,
-            slug: lesson.slug,
-            number: lesson.number
-          }
-        })
-      }
-    })
+const prisma = new PrismaClient()
+
+const lessonSelect = Prisma.validator<Prisma.LessonArgs>()({
+  select: {
+    title: true,
+    slug: true,
+    number: true
   }
+})
+
+export type LessonMeta = Prisma.LessonGetPayload<typeof lessonSelect>
+
+const chapterSelect = Prisma.validator<Prisma.ChapterArgs>()({
+  select: {
+    title: true,
+    slug: true,
+    number: true,
+    lessons: lessonSelect
+  }
+})
+
+export type ChapterMeta = Prisma.ChapterGetPayload<typeof chapterSelect>
+
+const courseSelect = Prisma.validator<Prisma.CourseArgs>()({
+  select: {
+    title: true,
+    chapters: chapterSelect
+  }
+})
+
+export type CourseMeta = Prisma.CourseGetPayload<typeof courseSelect>
+
+export default defineEventHandler(async () => {
+  const courseMeta = await prisma.course.findFirst(courseSelect)
+
+  if (courseMeta) { return courseMeta }
+
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Course metadata not found'
+  })
 })

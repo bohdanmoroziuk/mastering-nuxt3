@@ -1,7 +1,17 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['auth']
+})
+
 const route = useRoute()
 
+const courseProgressStore = useCourseProgressStore()
+
+const { initialize, toggleComplete } = courseProgressStore
+
 const { chapterSlug, lessonSlug } = route.params
+
+const isCompleted = computed(() => courseProgressStore.progress?.[chapterSlug as string]?.[lessonSlug as string] ?? false)
 
 const courseMeta = await useCourseMeta()
 
@@ -9,11 +19,11 @@ const lesson = await useLesson(chapterSlug as string, lessonSlug as string)
 
 const title = computed(() => `${lesson.value.title} - ${courseMeta.value.title}`)
 
+initialize()
+
 useHead({
   title: title.value
 })
-
-// const [isComplete, toggleComplete] = useCourseProgress(chapter.value!.number, lesson.value!.number)
 </script>
 
 <template>
@@ -42,9 +52,11 @@ useHead({
     </div>
     <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
     <p>{{ lesson.text }}</p>
-    <!-- <LessonCompleteButton
-      :model-value="isComplete"
-      @update:model-value="toggleComplete"
-    /> -->
+    <PermissionGate>
+      <LessonCompleteButton
+        :model-value="isCompleted"
+        @update:model-value="toggleComplete(chapterSlug as string, lessonSlug as string)"
+      />
+    </PermissionGate>
   </div>
 </template>

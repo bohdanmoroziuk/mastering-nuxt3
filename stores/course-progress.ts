@@ -12,10 +12,6 @@ export const useCourseProgressStore = defineStore('course-progress', () => {
   }
 
   function toggleComplete (chapter: string, lesson: string) {
-    const user = useSupabaseUser()
-
-    if (!user.value) { return }
-
     const currentProgress = progress.value?.[chapter]?.[lesson]
 
     progress.value[chapter] = {

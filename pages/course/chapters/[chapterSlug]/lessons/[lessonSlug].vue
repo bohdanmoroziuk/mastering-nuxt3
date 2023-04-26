@@ -3,8 +3,6 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const user = useSupabaseUser()
-
 const route = useRoute()
 
 const courseProgressStore = useCourseProgressStore()
@@ -54,10 +52,11 @@ useHead({
     </div>
     <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
     <p>{{ lesson.text }}</p>
-    <LessonCompleteButton
-      v-if="user"
-      :model-value="isCompleted"
-      @update:model-value="toggleComplete(chapterSlug as string, lessonSlug as string)"
-    />
+    <PermissionGate>
+      <LessonCompleteButton
+        :model-value="isCompleted"
+        @update:model-value="toggleComplete(chapterSlug as string, lessonSlug as string)"
+      />
+    </PermissionGate>
   </div>
 </template>

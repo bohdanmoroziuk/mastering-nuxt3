@@ -1,4 +1,4 @@
-export type CourseProgress = Record<string, Record<string, boolean>>
+import { CourseProgress } from '~/types/course'
 
 export const useCourseProgressStore = defineStore('course-progress', () => {
   const progress = useLocalStorage<CourseProgress>('course-progress', {})

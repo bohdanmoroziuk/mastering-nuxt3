@@ -8,6 +8,8 @@ const resetError = (error: Ref<unknown>) => {
 const user = useUser()
 
 const { logout } = useAuth()
+
+const { percentageCompleted } = storeToRefs(useCourseProgressStore())
 </script>
 
 <template>
@@ -25,13 +27,24 @@ const { logout } = useAuth()
       >
         <h3>Chapters</h3>
         <div
-          v-for="chapter of courseMeta.chapters"
+          v-for="(chapter, chapterIndex) of courseMeta.chapters"
           :key="chapter.slug"
           class="space-y-1 mb-4 flex flex-col"
         >
-          <h4>
-            {{ chapter.title }}
-          </h4>
+          <PermissionGate>
+            <h4 class="flex justify-between items-center">
+              {{ chapter.title }}
+              <span class="text-sm text-emerald-500">
+                {{ percentageCompleted.chapters[chapterIndex] }}%
+              </span>
+            </h4>
+
+            <template #no-access>
+              <h4>
+                {{ chapter.title }}
+              </h4>
+            </template>
+          </PermissionGate>
           <NuxtLink
             v-for="lesson of chapter.lessons"
             :key="lesson.slug"
@@ -47,6 +60,14 @@ const { logout } = useAuth()
             </span>
           </NuxtLink>
         </div>
+        <PermissionGate>
+          <div
+            class="mt-8 text-sm font-medium text-gray-500 flex justify-between items-center"
+          >
+            Course completion:
+            <span>{{ percentageCompleted.course }}%</span>
+          </div>
+        </PermissionGate>
       </div>
 
       <div class="prose p-12 bg-white rounded-md w-[65ch]">

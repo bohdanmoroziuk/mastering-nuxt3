@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 interface Props {
-  videoId: number;
+  videoId: string;
 }
 
 const props = defineProps<Props>()
